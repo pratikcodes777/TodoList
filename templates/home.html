@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+  td.todo-item {
+    max-width: 150px; /* Adjust the width as per your layout */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+</style>
+<div style="display: flex; justify-content: center;">
+    {% for message in messages %}
+   <b>
+       <p style="text-align: center; font-weight: 300; font-size: larger; color: rgb(4, 33, 200); ">{{ message }}</p>
+   </b>
+   {% endfor %}   
+   </div>
+<div class="container" style="display: flex; flex-direction: column; align-items: center; margin-top: 20px;">
+
+  <!-- Greeting Section -->
+  {% if user.is_authenticated %}
+  <h2 class="mt-4"> <u>Hello, {{ user.username }}</u> </h2>
+
+  <!-- Add Todo Form -->
+  <form class="row g-3 mb-4 mt-4" style="justify-content: center; border: 2px dotted blue;" method="post">
+    {% csrf_token %}
+    <h3 class="text-center">Todo List App</h3>
+    <div class="col-auto">
+      <input type="text" class="form-control" placeholder="Enter your task here" name="todo">
+    </div>
+    <div class="col-auto">
+      <button type="submit" class="btn btn-primary mb-3">Add Task</button>
+    </div>
+  </form>
+
+  <!-- Todo List Table -->
+  <div style="width: 100%; max-width: 600px; border: 3px dotted red;">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">No</th>
+          <th scope="col">Todo Items</th>
+          <th scope="col">Status</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for todo in all_todos %}
+        <tr class="{% if todo.status %}table-success{% else %}table-primary{% endif %}"></tr>
+          <th scope="row">{{ forloop.counter }}</th>
+          <td class="todo-item">{{ todo.name }}</td>
+          {% if todo.status %}
+          <td>Completed</td>
+          {% else %}
+          <td>Pending</td>
+          {% endif %}
+          <td>
+            <a href="{% url 'delete' todo.name %}" class="btn btn-danger">Delete</a>
+            <a href="{% url 'toggle' todo.name %}" class="btn btn-primary">Toggle Status</a>
+            <a href="{% url 'update-todo' todo.name %}" class="btn btn-secondary">Update</a>
+
+
+            <!-- {% if todo.status %}
+            <a href="{% url 'unupdate' todo.name %}" class="btn btn-primary">Not finished</a>
+            {% else %}
+            <a href="{% url 'update' todo.name %}" class="btn btn-primary">Finished</a>
+            {% endif %} -->
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <h1 class="mt-4">Hello, Anonymous</h1>
+  <h2 class="text-center">Please Register or Login to continue using this app's features.</h2>
+  {% endif %}
+  
+</div>
+{% endblock content %}

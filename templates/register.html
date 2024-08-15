@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div style="display: flex; justify-content: center;">
+         {% for message in messages %}
+        <b>
+            <p style="text-align: center; font-weight: 300; font-size: larger; color: rgb(4, 33, 200); ">{{ message }}</p>
+        </b>
+        {% endfor %}   
+        </div>
+        
+        <div class="card">
+          <div class="card-header text-center">
+            <h4>Register Now</h4>
+          </div>
+          <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+              <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" name="username" placeholder="Enter your username" required>
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">Email address</label>
+                <input type="email" class="form-control" name="email" placeholder="Enter your email" required>
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" class="form-control" name="password" placeholder="Enter your password" required>
+              </div>
+              <div class="d-grid">
+                <button type="submit" class="btn btn-primary">Register</button>
+              </div>
+            </form>
+          </div>
+          
+        <div class="text-center mt-3">
+            <p>Already have an account? <a href="{% url 'login' %}">Login Now</a></p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  
+
+{% endblock content %}
